@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Row, Col, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Loading } from './LoadingComponent';
 
 
 
@@ -54,14 +55,14 @@ class CommentForm extends Component {
                             </Row>
                             <Row className="form-group">
                                 <Col>
-                                    <Label htmlFor="name">Your Name</Label>
-                                    <Control.text id="name" name="name" placeholder="Your Name" model=".name" className="form-control"
+                                    <Label htmlFor="author">Your Name</Label>
+                                    <Control.text id="author" name="author" placeholder="Your Name" model=".author" className="form-control"
                                         validators={{
                                             minLength: minLength(3), maxLength: maxLength(15)
                                         }} />
                                     <Errors
                                         className="text-danger"
-                                        model=".name"
+                                        model=".author"
                                         show="touched"
                                         messages={{
                                             minLength: 'Must be greater than 2 characters',
@@ -131,7 +132,25 @@ function RenderComments({ comments, addComment, dishId }) {
 }
 
 const Dishdetail = (props) => {
-    if (props.dish)
+    if (props.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    else if (props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+    else if (props.dish)
         return (
             <div className="container">
                 <div className="row">
@@ -149,7 +168,7 @@ const Dishdetail = (props) => {
                         <RenderDish dish={props.dish} />
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                        <RenderComments comments={props.comments} addComment={props.addComment} dishId={props.dish.id}/>
+                        <RenderComments comments={props.comments} addComment={props.addComment} dishId={props.dish.id} />
                     </div>
                 </div>
             </div>
