@@ -111,7 +111,7 @@ function RenderComments({ comments, postComment, dishId }) {
     if (comments != null) {
         const listComments = comments.map((comment) => {
             return (
-                <Fade in>
+                <Fade in key={comment.id}>
                     <li className="list-unstyled" key={comment.id}>
                         {comment.comment}
                         <br />
